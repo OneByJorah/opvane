@@ -1,6 +1,8 @@
 .git
 .gitignore
 .env
+.env.local
+.env.*
 __pycache__/
 *.pyc
 *.db
@@ -8,8 +10,18 @@ __pycache__/
 .idea/
 .vscode/
 .DS_Store
+Thumbs.db
 .github/
 backups/
+docs/
+scripts/
+node_modules/
+.venv/
+venv/
+.venv-screenshot/
 README.md
 CONTRIBUTING.md
 AUDIT_REPORT.md
+CHANGELOG.md
+FIXES.md
+knowledge.md

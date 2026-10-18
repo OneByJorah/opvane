@@ -1,5 +1,5 @@
-// Captures real screenshots of the running demo stack with Playwright.
-// Usage (stack already running):  BASE_URL=http://127.0.0.1:8080 node scripts/screenshots.mjs
+// Captures real screenshots of the running local stack with Playwright.
+// Usage (stack already running): BASE_URL=http://127.0.0.1:51763 node scripts/screenshots.mjs
 // Requires: npm install --no-save playwright && npx playwright install chromium
 //
 // Safety: every page is scanned for private IPs, tailnet IPs, emails, and forbidden words
@@ -11,13 +11,16 @@ import fs from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 
-const BASE = process.env.BASE_URL || "http://127.0.0.1:8080";
+const BASE = process.env.BASE_URL || "http://127.0.0.1:51763";
 const OUT = process.env.OUT_DIR || "docs/screenshots";
 const RECORD = process.env.RECORD === "1";
 
-// Edit this list per project: one entry per screen worth showing.
+// One entry per meaningful screen. All navigation is done on the single-page app.
 const PAGES = [
-  { name: "dashboard", path: "/", waitFor: "#app-ready" },
+  { name: "dashboard", path: "/", waitFor: ".status-pill" },
+  { name: "agents", path: "/", click: 'button[data-tab="agents"]', waitFor: "th" },
+  { name: "tasks", path: "/", click: 'button[data-tab="tasks"]', waitFor: ".column-title" },
+  { name: "schedule", path: "/", click: 'button[data-tab="schedule"]', waitFor: ".job-grid, .empty-jobs" },
 ];
 
 const FORBIDDEN = [
@@ -25,6 +28,7 @@ const FORBIDDEN = [
   { label: "tailnet IPv4", re: /\b100\.(?:6[4-9]|[7-9]\d|1[01]\d|12[0-7])\.\d{1,3}\.\d{1,3}\b/ },
   { label: "email address", re: /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i },
   { label: "school domain", re: /\bk12\.vi\b/i },
+  { label: "host username", re: /\bjorahdev\b/i },
   ...(process.env.SCRUB_PATTERNS || "")
     .split(",")
     .map((p) => p.trim())
@@ -36,8 +40,6 @@ fs.mkdirSync(OUT, { recursive: true });
 const videoDir = path.join("tmp", "videos");
 if (RECORD) fs.mkdirSync(videoDir, { recursive: true });
 
-// CHROMIUM_PATH: use an existing Chrome/Chromium instead of Playwright's download (handy on a prepared runner).
-// NO_SANDBOX=1: needed when running as root inside some containers.
 const browser = await chromium.launch({
   executablePath: process.env.CHROMIUM_PATH || undefined,
   args: process.env.NO_SANDBOX === "1" ? ["--no-sandbox"] : [],
@@ -53,6 +55,10 @@ let failed = false;
 for (const p of PAGES) {
   const page = await context.newPage();
   await page.goto(new URL(p.path, BASE).toString(), { waitUntil: "networkidle" });
+  if (p.click) {
+    await page.locator(p.click).first().click();
+    await page.waitForTimeout(300);
+  }
   if (p.waitFor) await page.waitForSelector(p.waitFor, { timeout: 15000 });
 
   const text = (await page.evaluate(() => document.body.innerText)) + "\n" + (await page.title());

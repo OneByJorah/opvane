@@ -1,7 +1,7 @@
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-    Windows installer for OpsCenter via Docker Desktop.
+    Windows installer for opvane via Docker Desktop.
 #>
 param(
     [switch]$SkipStart
@@ -9,7 +9,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-Write-Host "=== Installing OpsCenter ===" -ForegroundColor Cyan
+Write-Host "=== Installing opvane ===" -ForegroundColor Cyan
 
 if (-not (Get-Command docker -ErrorAction SilentlyContinue)) {
     Write-Error "Docker Desktop is required but not found. Install it from https://www.docker.com/products/docker-desktop/"
@@ -29,9 +29,9 @@ if (-not (Test-Path $envFile)) {
 $composeCmd = if (Get-Command "docker" -ErrorAction SilentlyContinue) { "docker compose" } else { "docker-compose" }
 
 if (-not $SkipStart) {
-    Write-Host "Building and starting OpsCenter on port 51763..." -ForegroundColor Green
+    Write-Host "Building and starting opvane on port 51763..." -ForegroundColor Green
     Invoke-Expression "$composeCmd up --build -d"
-    Write-Host "OpsCenter installed. Access: http://localhost:51763" -ForegroundColor Green
+    Write-Host "opvane installed. Access: http://localhost:51763" -ForegroundColor Green
 } else {
     Write-Host "Skipped start. Run '$composeCmd up --build -d' when ready." -ForegroundColor Yellow
 }

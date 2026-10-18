@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Capture OpsCenter screenshots using Playwright HTML mockups.
+"""Capture opvane screenshots using Playwright HTML mockups.
 
 Usage:
     python scripts/capture-screenshots.py
@@ -22,7 +22,7 @@ DASHBOARD_HTML = r"""
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpsCenter - Mission Control</title>
+    <title>opvane - Mission Control</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -58,7 +58,7 @@ DASHBOARD_HTML = r"""
 </head>
 <body>
     <div class="sidebar">
-        <div class="logo">⚡ <span>OpsCenter</span></div>
+        <div class="logo">⚡ <span>opvane</span></div>
         <div class="nav-item active">📊 Dashboard</div>
         <div class="nav-item">🤖 Agents</div>
         <div class="nav-item">📋 Workflows</div>
@@ -123,7 +123,7 @@ AGENTS_HTML = r"""
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpsCenter - Agent Management</title>
+    <title>opvane - Agent Management</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -161,7 +161,7 @@ AGENTS_HTML = r"""
 </head>
 <body>
     <div class="sidebar">
-        <div class="logo">⚡ <span>OpsCenter</span></div>
+        <div class="logo">⚡ <span>opvane</span></div>
         <div class="nav-item">📊 Dashboard</div>
         <div class="nav-item active">🤖 Agents</div>
         <div class="nav-item">📋 Workflows</div>
@@ -265,7 +265,7 @@ AGENTS_HTML = r"""
 """
 
 def capture_screenshots():
-    """Capture OpsCenter screenshots using HTML mockups.
+    """Capture opvane screenshots using HTML mockups.
     
     Note: These are representative mockups, not screenshots from the running application.
     """

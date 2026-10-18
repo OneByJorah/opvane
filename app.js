@@ -612,7 +612,7 @@ function buildShell() {
         <div class="pulse-dot"></div>
         <div class="ring"></div>
       </div>
-      <span class="brand-text">Hermes / ORCHESTRATOR</span>
+      <span class="brand-text">opvane</span>
       ${Badge({ text: 'v1.0', color: 'var(--text-muted)', variant: 'subtle' })}
     </div>
     <div class="nav-tabs">

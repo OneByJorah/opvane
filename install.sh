@@ -3,7 +3,7 @@ set -euo pipefail
 
 cd "$(dirname "$0")"
 
-echo "=== Installing OpsCenter ==="
+echo "=== Installing opvane ==="
 
 if ! command -v docker &> /dev/null; then
     echo "Docker is required but not installed. Please install Docker first."
@@ -25,11 +25,11 @@ if [ ! -f .env ]; then
     fi
 fi
 
-echo "Building and starting OpsCenter on port 51763..."
+echo "Building and starting opvane on port 51763..."
 if docker compose version &> /dev/null; then
     docker compose up --build -d
 else
     docker-compose up --build -d
 fi
 
-echo "OpsCenter installed. Access: http://localhost:51763"
+echo "opvane installed. Access: http://localhost:51763"
