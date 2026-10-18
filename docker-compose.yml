@@ -1,27 +1,23 @@
-version: "3.9"
-
-# ============================================================================
-# Agent Mission Control — Hermes Mission Control Dashboard
+# opvane — AI agent operations dashboard
 # JorahOne
 #
 # Self-contained Python HTTP server with HTML/JS frontend.
-# Reads Hermes state from ~/.hermes/ on the host.
-# ============================================================================
+# Reads Hermes state from the host HERMES_HOME directory.
 
 services:
-  mission-control:
+  opvane:
     build:
       context: .
       dockerfile: Dockerfile
-    image: jorahone/agent-mission-control:latest
-    container_name: agent-mission-control
+    image: ghcr.io/onebyjorah/opvane:latest
+    container_name: opvane
     ports:
-      - "${PORT:-51763}:${PORT:-51763}"
+      - "127.0.0.1:${PORT:-51763}:${PORT:-51763}"
     env_file:
       - .env
     environment:
       - PORT=${PORT:-51763}
-      - BIND=${BIND:-<ip-address>}
+      - BIND=${BIND:-0.0.0.0}
       - MISSION_CONTROL_API_KEY=${MISSION_CONTROL_API_KEY:-}
       - HERMES_HOME=${HERMES_HOME:-/hermes-home}
       - MISSION_CONTROL_CONTENT_DIR=${MISSION_CONTROL_CONTENT_DIR:-/app/content}
@@ -30,6 +26,11 @@ services:
       - ${HERMES_HOME:-~/.hermes}:/hermes-home:ro
       # Persistent board database
       - board-data:/app
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:${PORT:-51763}/api/health', timeout=5)"]
