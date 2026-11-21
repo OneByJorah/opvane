@@ -3,7 +3,7 @@
 #
 # Self-contained Python HTTP server with HTML/JS frontend.
 # Uses only Python stdlib — no pip dependencies required.
-FROM python:3.11-alpine@sha256:d9368b3a5ac59afea7b5d4f2e2aea0941dbf9fdee9c369c5bec00b98244bc929
+FROM python:3.15-alpine@sha256:0f9552bb28711333da16915ec146f5e6bb44a7fdac9ced15dc17c2e0206346dd
 
 # Create non-root runtime user
 RUN adduser -D -h /app -u 1000 appuser
